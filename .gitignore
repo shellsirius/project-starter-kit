@@ -8,3 +8,7 @@
 # logs / temp
 *.log
 *.tmp
+
+# private presets (team-specific defaults, not for public repo)
+presets/ewill.md
+presets/*.private.*
