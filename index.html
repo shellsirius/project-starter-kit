@@ -374,7 +374,7 @@ const CONFIG = [
       {v:'僅管理者後台建立'},{v:'兩者皆可'}]},
     {id:'sso',label:'SSO／單一登入整合',type:'radio',newItem:true,opts:[
       {v:'不需要'},{v:'需要',reveal:{id:'sso-d',label:'整合對象',ph:'例：AD、LDAP、政府公務帳號、OAuth'}}]},
-    {id:'cap',label:'是否需要驗證碼',type:'radio',opts:[
+    {id:'cap',label:'是否需要圖形驗證碼',type:'radio',opts:[
       {v:'是'},{v:'否'}]},
     {id:'cap-style',label:'驗證碼樣式',type:'radio',showIf:a=>a['cap']==='是',opts:[
       {v:'6 碼數字'},{v:'6 碼英數字'},{v:'6 碼英文字母'},{v:'reCAPTCHA'},{v:'其他',reveal:{id:'cap-o',label:'說明',ph:''}}]},
@@ -384,8 +384,11 @@ const CONFIG = [
     {id:'first-pw',label:'初次登入是否強制變更密碼',type:'radio',opts:[{v:'是'},{v:'否'}]},
 
     {group:'3-2　錯誤鎖定'},
-    {id:'pw-lock',label:'密碼錯誤是否需鎖定',type:'radio',opts:[
-      {v:'是',reveal:{id:'pw-lock-d',label:'次數上限／鎖定時間',ph:'例：5 次、鎖定 15 分鐘'}},{v:'否'}]},
+    {id:'pw-lock',label:'密碼錯誤是否需鎖定',type:'radio',opts:[{v:'是'},{v:'否'}]},
+    {id:'pw-lock-times',label:'錯誤次數上限',type:'radio',showIf:a=>a['pw-lock']==='是',opts:[
+      {v:'3 次'},{v:'5 次'},{v:'10 次'},{v:'其他',reveal:{id:'pw-lock-times-o',label:'次數',ph:''}}]},
+    {id:'pw-lock-dur',label:'鎖定時間',type:'radio',showIf:a=>a['pw-lock']==='是',opts:[
+      {v:'5 分鐘'},{v:'15 分鐘'},{v:'30 分鐘'},{v:'其他',reveal:{id:'pw-lock-dur-o',label:'時間',ph:''}}]},
     {id:'lock-mode',label:'鎖定模式（密碼錯誤鎖定才需選）',type:'radio',showIf:a=>a['pw-lock']==='是',opts:[
       {v:'鎖定帳號',rec:true},{v:'鎖定當前瀏覽器'}],
       hint:'<b>鎖定帳號（推薦）</b>：在 DB 記錄鎖定狀態，換瀏覽器、重整、換裝置都無法解除，安全性高；要留意有心人可故意連續輸錯來「鎖死」特定帳號。'
@@ -393,18 +396,23 @@ const CONFIG = [
         +'<br>政府／高安情境多選「鎖定帳號」。'},
 
     {group:'3-3　密碼規範與效期'},
+    {id:'pw-len',label:'密碼長度（字元數）',type:'text',default:'8-20',ph:'例：8-20'},
     {id:'pw-rules',label:'密碼規範（可複選）',type:'multi',opts:[
-      {v:'長度 8–20 碼'},{v:'含數字'},{v:'含英文大寫'},{v:'含英文小寫'},{v:'含特殊符號 #?!@$%^&*-'}]},
+      {v:'必須包含數字'},{v:'必須包含英文大寫'},{v:'必須包含英文小寫'},{v:'必須包含特殊符號 #?!@$%^&*-'}]},
     {id:'pw-limit',label:'輸入字元限制',type:'text',optional:true,ph:'不可輸入：＿＿ / 僅限輸入：＿＿（無則留空）'},
-    {id:'pw-max',label:'密碼最長效期',type:'radio',opts:[{v:'不需要'},{v:'有'}]},
-    {id:'pw-max-d',label:'最長效期天數',type:'radio',showIf:a=>a['pw-max']==='有',opts:[
-      {v:'30 天'},{v:'60 天'},{v:'90 天'},{v:'其他',reveal:{id:'pw-max-o',label:'天數',ph:''}}]},
-    {id:'pw-min',label:'密碼最短效期',type:'radio',opts:[{v:'不需要'},{v:'有'}]},
-    {id:'pw-min-d',label:'最短效期天數',type:'radio',showIf:a=>a['pw-min']==='有',opts:[
-      {v:'1 天'},{v:'2 天'},{v:'3 天'},{v:'其他',reveal:{id:'pw-min-o',label:'天數',ph:''}}]},
     {id:'pw-reuse',label:'變更密碼不可與前幾次相同',type:'radio',opts:[{v:'不需要'},{v:'有'}]},
     {id:'pw-reuse-d',label:'不可重複次數',type:'radio',showIf:a=>a['pw-reuse']==='有',opts:[
       {v:'3 次'},{v:'5 次'},{v:'6 次'},{v:'其他',reveal:{id:'pw-reuse-o',label:'次數',ph:''}}]},
+    {id:'pw-max',label:'密碼最長效期',type:'radio',opts:[{v:'不需要'},{v:'有'}],
+      hint:'密碼使用超過設定天數就<b>強制要求更換</b>，目的是定期汰換舊密碼、降低長期外洩風險（例：90 天到期須改密碼）。'},
+    {id:'pw-max-d',label:'最長效期天數',type:'radio',showIf:a=>a['pw-max']==='有',opts:[
+      {v:'30 天'},{v:'60 天'},{v:'90 天'},{v:'180 天'},{v:'365 天'},{v:'其他',reveal:{id:'pw-max-o',label:'天數',ph:''}}]},
+    {id:'pw-allow-old',label:'是否提供沿用舊密碼',type:'radio',newItem:true,showIf:a=>a['pw-reuse']==='不需要'&&a['pw-max']==='有',opts:[{v:'是'},{v:'否'}],
+      hint:'密碼到期被迫更換時，因為沒設「不可與前幾次相同」，使用者是否可直接沿用原本的密碼。'},
+    {id:'pw-min',label:'密碼最短效期',type:'radio',opts:[{v:'不需要'},{v:'有'}],
+      hint:'改密碼後<b>至少要隔幾天才能再改一次</b>。用來防止使用者為了規避「不可與前幾次相同」規則，連續快速改密碼把舊密碼換回來（例：設 1 天，當天改完不能再改）。'},
+    {id:'pw-min-d',label:'最短效期天數',type:'radio',showIf:a=>a['pw-min']==='有',opts:[
+      {v:'1 天'},{v:'2 天'},{v:'3 天'},{v:'其他',reveal:{id:'pw-min-o',label:'天數',ph:''}}]},
 
     {group:'3-4　權限設定'},
     {id:'perm-other-pw',label:'可否變更他人密碼',type:'radio',opts:[{v:'是'},{v:'否'}]},
@@ -785,6 +793,8 @@ document.getElementById('mobPvBtn').onclick=()=>{document.getElementById('previe
 
 /* init */
 load();
+// 帶入預設值（僅在該題尚未填過時）
+CONFIG.forEach(s=>s.questions.forEach(q=>{if(q.default!==undefined&&A[q.id]===undefined)A[q.id]=q.default;}));
 document.getElementById('techToggle').classList.toggle('on',showTech);
 renderAll();
 </script>
