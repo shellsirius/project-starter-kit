@@ -81,6 +81,20 @@ body::before{
 .tech-toggle.on .sw{background:var(--accent)}
 .tech-toggle.on .sw::after{left:15px}
 @media(max-width:720px){.tech-toggle span.lbl{display:none}}
+@media(max-width:720px){
+  .topbar{gap:10px;padding:11px 14px}
+  .btn{padding:9px 15px;font-size:13px}
+  .btn.ghost{padding:9px 11px}
+  .brand>div{min-width:0}
+  .brand h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+@media(max-width:480px){
+  .brand .mark{display:none}
+  .topbar{gap:8px;padding:10px 12px}
+  .toolbtns{gap:6px}
+  .btn.ghost{padding:8px 9px;font-size:12.5px}
+  .tech-toggle{padding:5px 9px}
+}
 
 /* ---------- Layout ---------- */
 .shell{position:relative;z-index:1;display:grid;grid-template-columns:226px 1fr 420px;gap:0;min-height:calc(100vh - 56px)}
@@ -189,6 +203,8 @@ body::before{
 .pv-head .live{font-size:11px;color:var(--doc-accent);display:flex;align-items:center;gap:6px}
 .pv-head .live i{width:6px;height:6px;border-radius:50%;background:var(--doc-accent);animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pv-close{display:none;align-items:center;gap:5px;font-family:inherit;font-weight:500;font-size:13px;color:#fff;background:var(--ink);border:1.5px solid var(--ink);border-radius:999px;padding:7px 15px;cursor:pointer;transition:.15s}
+.pv-close:hover{background:var(--accent);border-color:var(--accent)}
 .pv-body{flex:1;overflow:auto;padding:20px 22px;font-family:"DM Mono";font-size:12.5px;line-height:1.85;color:var(--doc-ink);white-space:pre-wrap;word-break:break-word}
 .pv-body .h1{color:var(--ink);font-weight:500;font-size:14px}
 .pv-body .h2{color:var(--doc-accent);font-weight:500}
@@ -208,7 +224,9 @@ body::before{
 .mobpv{display:none}
 @media(max-width:1180px){
   .mobpv{display:inline-flex}
-  .preview-col.open{display:flex;position:fixed;inset:56px 0 0 0;height:auto;z-index:50}
+  .preview-col.open{display:flex;position:fixed;inset:0;height:auto;z-index:55}
+  .preview-col.open .pv-close{display:inline-flex}
+  .preview-col.open .pv-head .dots{display:none}
 }
 
 /* ---------- intro / welcome ---------- */
@@ -297,6 +315,7 @@ body::before{
   <!-- preview -->
   <aside class="preview-col" id="previewCol">
     <div class="pv-head">
+      <button class="pv-close" id="pvClose" title="返回表單繼續填答">← 返回表單</button>
       <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
       <span class="fname">專案規格決策表.md</span>
       <span class="live"><i></i>即時</span>
@@ -867,6 +886,7 @@ document.getElementById('resetBtn').onclick=()=>{
   if(confirm('確定清除所有答案？')){for(const k in A)delete A[k];cur=0;localStorage.removeItem(LS);renderAll();toast('已清除');}
 };
 document.getElementById('mobPvBtn').onclick=()=>{document.getElementById('previewCol').classList.toggle('open');};
+document.getElementById('pvClose').onclick=()=>{document.getElementById('previewCol').classList.remove('open');};
 
 /* intro / welcome */
 const SEEN='spec-kit-seen-v1';
