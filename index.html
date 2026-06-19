@@ -210,9 +210,56 @@ body::before{
   .mobpv{display:inline-flex}
   .preview-col.open{display:flex;position:fixed;inset:56px 0 0 0;height:auto;z-index:50}
 }
+
+/* ---------- intro / welcome ---------- */
+.intro{display:none;position:fixed;inset:0;z-index:100;background:var(--paper);overflow-y:auto;
+  background-image:
+    radial-gradient(680px 440px at 94% -8%,rgba(224,141,128,.18),transparent 62%),
+    radial-gradient(560px 460px at 4% 4%,rgba(224,169,94,.14),transparent 60%),
+    radial-gradient(760px 520px at 50% 118%,rgba(94,158,126,.14),transparent 60%);}
+.intro.show{display:flex;align-items:center;justify-content:center;padding:36px 20px}
+.intro-card{position:relative;max-width:600px;width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:clamp(28px,5vw,46px);animation:rise .5s both}
+.intro-card::before{content:"";position:absolute;top:-15px;right:26px;width:46px;height:40px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='40' viewBox='0 0 46 40'%3E%3Cpath d='M14,2C15,9,18,12,25,13C18,14,15,17,14,24C13,17,10,14,3,13C10,12,13,9,14,2Z' fill='%23E0A95E'/%3E%3Cpath d='M34,20C35,25,37,27,42,28C37,29,35,31,34,36C33,31,31,29,26,28C31,27,33,25,34,20Z' fill='%236FAE97'/%3E%3C/svg%3E") center/contain no-repeat}
+.intro-card .mark{display:inline-block;font-family:"DM Mono";font-size:12px;letter-spacing:.2em;color:#fff;background:var(--ink);padding:5px 11px;border-radius:9px}
+.intro-card h2{font-family:"Zen Maru Gothic","Noto Sans TC",sans-serif;font-weight:700;font-size:clamp(27px,5vw,38px);margin:16px 0 4px;line-height:1.14}
+.intro-card h2::after{content:"";display:block;width:78px;height:11px;margin-top:9px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='12' viewBox='0 0 90 12'%3E%3Cpath d='M2,6Q9,1,16,6T30,6T44,6T58,6T72,6T86,6' fill='none' stroke='%23E08D80' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") left center/contain no-repeat}
+.intro-lead{color:var(--ink-soft);font-size:15px;line-height:1.7;margin:14px 0 16px}
+.intro-who{font-size:13.5px;color:var(--ink-soft);background:var(--paper-2);border-radius:14px;padding:11px 15px;margin-bottom:18px;line-height:1.6}
+.intro-who b{color:var(--ink)}
+.intro-steps{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:18px}
+.intro-steps li{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--ink)}
+.intro-steps li span{flex:none;width:27px;height:27px;border-radius:50%;background:var(--accent-wash);border:1.5px solid var(--accent);color:var(--ink);font-family:"Zen Maru Gothic","Noto Sans TC",sans-serif;font-weight:700;font-size:14px;display:grid;place-items:center}
+.intro-priv{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink-soft);background:#E5F0EA;border:1px solid #C6E1D2;border-radius:14px;padding:11px 14px;margin-bottom:22px;line-height:1.55}
+.intro-priv .lock{flex:none}
+.intro-start{width:100%;justify-content:center;font-size:15.5px;padding:13px 24px}
+.intro-foot{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:13px;letter-spacing:.05em}
+.intro-credit{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+.intro-credit b{color:var(--ink);font-weight:700}
+.intro-credit a{font-family:"DM Mono";color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-wash);transition:.15s}
+.intro-credit a:hover{border-bottom-color:var(--accent)}
 </style>
 </head>
 <body>
+
+<div class="intro" id="intro">
+  <div class="intro-card">
+    <span class="mark">SPEC&nbsp;KIT</span>
+    <h2>專案起始新手包</h2>
+    <p class="intro-lead">用一連串問答，幫你把網站專案的「全域規格」一次決定好——頁首頁尾、登入與密碼、Session 效期、無障礙、資安部署……答完直接產出一份 Markdown 規格文件。</p>
+    <p class="intro-who"><b>給誰用：</b>非技術的 PM、專案窗口。不用懂技術，照著選就好；不確定的題目可以先跳過。</p>
+    <ol class="intro-steps">
+      <li><span>1</span>一關一關回答問題</li>
+      <li><span>2</span>右側即時看到產出的規格文件</li>
+      <li><span>3</span>複製或下載 .md，貼進 SRS／SA 或交給工程團隊</li>
+    </ol>
+    <div class="intro-priv"><span class="lock">🔒</span>你的答案只會存在這台電腦的瀏覽器裡，不會上傳到任何伺服器。</div>
+    <button class="btn primary intro-start" id="introStart">開始建立 →</button>
+    <p class="intro-foot">免費 · 開源 · 免註冊</p>
+    <p class="intro-credit">Made by 雪綸 <b>Sharon</b> · <a href="https://www.threads.com/@sharon_uiux" target="_blank" rel="noopener">@sharon_uiux</a></p>
+  </div>
+</div>
 
 <header class="topbar">
   <div class="brand">
@@ -227,6 +274,7 @@ body::before{
       <span class="sw"></span><span class="lbl">顯示技術題 🔧</span>
     </div>
     <button class="btn ghost mobpv" id="mobPvBtn">預覽</button>
+    <button class="btn ghost" id="aboutBtn" title="關於這個工具">關於</button>
     <button class="btn ghost" id="resetBtn" title="清除所有答案">清除</button>
   </div>
 </header>
@@ -820,6 +868,12 @@ document.getElementById('resetBtn').onclick=()=>{
 };
 document.getElementById('mobPvBtn').onclick=()=>{document.getElementById('previewCol').classList.toggle('open');};
 
+/* intro / welcome */
+const SEEN='spec-kit-seen-v1';
+const introEl=document.getElementById('intro');
+document.getElementById('introStart').onclick=()=>{introEl.classList.remove('show');localStorage.setItem(SEEN,'1');};
+document.getElementById('aboutBtn').onclick=()=>{introEl.classList.add('show');};
+
 /* init */
 load();
 // 帶入預設值（僅在該題尚未填過時）
@@ -827,6 +881,7 @@ CONFIG.forEach(s=>s.questions.forEach(q=>{if(q.default!==undefined&&A[q.id]===un
 Object.entries(PRESET.defaults).forEach(([id,v])=>{if(A[id]===undefined)A[id]=v;});
 document.getElementById('techToggle').classList.toggle('on',showTech);
 renderAll();
+if(!localStorage.getItem(SEEN))introEl.classList.add('show');  // 首次進站才顯示開場頁
 </script>
 </body>
 </html>
