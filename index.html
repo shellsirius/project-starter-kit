@@ -80,6 +80,10 @@ body::before{
 .tech-toggle .sw::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:#fff;transition:.2s}
 .tech-toggle.on .sw{background:var(--accent)}
 .tech-toggle.on .sw::after{left:15px}
+/* sub bar (技術題開關獨立一列) */
+.subbar{position:relative;z-index:30;display:flex;align-items:center;gap:12px;padding:9px clamp(18px,3vw,40px);background:var(--paper-2);border-bottom:1px solid var(--line)}
+.subbar-hint{font-size:12px;color:var(--ink-faint);line-height:1.4;min-width:0}
+@media(max-width:600px){.subbar-hint{display:none}}
 @media(max-width:720px){
   .topbar{gap:10px;padding:11px 14px}
   .btn{padding:9px 15px;font-size:13px}
@@ -91,9 +95,7 @@ body::before{
   .brand .mark{display:none}
   .topbar{gap:8px;padding:10px 12px}
   .toolbtns{gap:6px}
-  .btn.ghost{padding:8px 9px;font-size:12.5px}
-  .tech-toggle{padding:5px 9px;font-size:12px}
-  #aboutBtn{display:none}  /* 小螢幕收起「關於」，騰空間給有標籤的技術題開關 */
+  .btn.ghost{padding:8px 10px;font-size:12.5px}
 }
 
 /* ---------- Layout ---------- */
@@ -289,14 +291,18 @@ body::before{
     <span class="sub">· 全域規範決策精靈 · 問答完即產出規格 .md</span>
   </div>
   <div class="toolbtns">
-    <div class="tech-toggle on" id="techToggle" title="開啟＝顯示標示 🔧 的技術／合約題；關閉＝只留 PM 能決策的項目">
-      <span class="sw"></span><span class="lbl">技術題</span><span class="tw">🔧</span>
-    </div>
     <button class="btn ghost mobpv" id="mobPvBtn">預覽</button>
     <button class="btn ghost" id="aboutBtn" title="關於這個工具">關於</button>
     <button class="btn ghost" id="resetBtn" title="清除所有答案">清除</button>
   </div>
 </header>
+
+<div class="subbar">
+  <div class="tech-toggle on" id="techToggle" title="開啟＝顯示標示 🔧 的技術／合約題；關閉＝只留 PM 能決策的項目">
+    <span class="sw"></span><span class="lbl">技術題</span><span class="tw">🔧</span>
+  </div>
+  <span class="subbar-hint">開啟可顯示工程／合約相關的技術題（標示 🔧）；關閉只留 PM 能決策的項目</span>
+</div>
 
 <div class="shell">
   <!-- rail -->
