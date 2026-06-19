@@ -227,6 +227,7 @@ body::before{
   .preview-col.open{display:flex;position:fixed;inset:0;height:auto;z-index:55}
   .preview-col.open .pv-close{display:inline-flex}
   .preview-col.open .pv-head .dots{display:none}
+  body.previewing .topbar{display:none}  /* 預覽全螢幕時收起 header，避免擋住返回鈕 */
 }
 
 /* ---------- intro / welcome ---------- */
@@ -732,7 +733,7 @@ function renderForm(){
   next.className='btn primary';
   next.innerHTML=cur===secs.length-1?'完成 · 檢視文件 ✓':'下一關 →';
   next.onclick=()=>{
-    if(cur===secs.length-1){document.getElementById('previewCol').classList.add('open');toast('已產出規格文件，右側可複製或下載');}
+    if(cur===secs.length-1){setPreview(true);toast('已產出規格文件，右側可複製或下載');}
     else{cur++;renderAll();window.scrollTo({top:0,behavior:'smooth'});}
   };
   nav.appendChild(prev);nav.appendChild(next);
@@ -885,8 +886,13 @@ document.getElementById('dlBtn').onclick=()=>{
 document.getElementById('resetBtn').onclick=()=>{
   if(confirm('確定清除所有答案？')){for(const k in A)delete A[k];cur=0;localStorage.removeItem(LS);renderAll();toast('已清除');}
 };
-document.getElementById('mobPvBtn').onclick=()=>{document.getElementById('previewCol').classList.toggle('open');};
-document.getElementById('pvClose').onclick=()=>{document.getElementById('previewCol').classList.remove('open');};
+function setPreview(open){
+  const pc=document.getElementById('previewCol');
+  pc.classList.toggle('open',open);
+  document.body.classList.toggle('previewing',open);  // 同步：手機預覽時收起 header
+}
+document.getElementById('mobPvBtn').onclick=()=>{setPreview(!document.getElementById('previewCol').classList.contains('open'));};
+document.getElementById('pvClose').onclick=()=>{setPreview(false);};
 
 /* intro / welcome */
 const SEEN='spec-kit-seen-v1';
