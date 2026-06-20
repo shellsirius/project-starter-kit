@@ -63,7 +63,7 @@ const PRESET = {
 
 ## 作者
 
-雪綸 **Sharon** — [@sharon_uiux](https://www.threads.com/@sharon_uiux)
+雪綸 **Sharon** — [@sharon_pmux](https://www.threads.com/@sharon_pmux)
 
 ## 授權
 
